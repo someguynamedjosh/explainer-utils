@@ -1,6 +1,21 @@
 from bpy.props import FloatProperty
-from bpy.types import Object
+from bpy.types import Context, Object, UILayout
 from explainer_utils import bootstrap_utils
+
+
+def layout_properties(layout: UILayout, context: Context):
+    row = layout.row()
+    row.use_property_decorate = True
+    row.use_property_split = True
+    row.prop(context.object, "alpha", slider=True)
+
+    row = layout.row()
+    row.use_property_decorate = True
+    row.use_property_split = True
+    row.prop(context.object, "composite_alpha", slider=True)
+
+
+bootstrap_utils.object_panel_layouts.append((500, layout_properties))
 
 
 def register_properties():

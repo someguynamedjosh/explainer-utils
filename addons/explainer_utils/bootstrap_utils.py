@@ -11,11 +11,13 @@ def import_or_reload(module_name):
         globals()[module_name] = importlib.import_module(module_name)
 
 
-def clear_all_listeners():
-    global register_listeners, unregister_listeners
+def clear_all_registries():
+    global register_listeners, unregister_listeners, object_panel_layouts
     register_listeners.clear()
     unregister_listeners.clear()
+    object_panel_layouts.clear()
 
 
 register_listeners = []
 unregister_listeners = []
+object_panel_layouts = []
