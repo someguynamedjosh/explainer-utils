@@ -36,3 +36,11 @@ def register_properties():
 
 
 bootstrap_utils.register_listeners.append(register_properties)
+
+
+def unregister_properties():
+    Object.alpha = None
+    Object.composite_alpha = None
+
+
+bootstrap_utils.unregister_listeners.append(unregister_properties)
