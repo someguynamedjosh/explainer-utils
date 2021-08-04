@@ -1,3 +1,5 @@
+from explainer_utils import bootstrap_utils
+
 bl_info = {
     "name": "Explainer Utils",
     "category": "All",
@@ -5,13 +7,23 @@ bl_info = {
     "version": (0, 0, 1),
 }
 
-from explainer_utils import bootstrap_utils
 
-modules = [
-    *["explainer_utils." + module_name for module_name in [
-        "test_module",
-    ]]
-]
+def module_and_children(module_name, child_names):
+    return [
+        module_name,
+        *[module_name + "." + child_name for child_name in child_names]
+    ]
+
+
+# A list of all modules excluding the root module and bootstrap_utils.
+modules = module_and_children("explainer_utils", [
+    "test_module",
+    *module_and_children("alpha", [
+
+    ])
+])[1:]
+print(modules)
+
 
 def register():
     bootstrap_utils.clear_all_listeners()
@@ -19,6 +31,7 @@ def register():
         bootstrap_utils.import_or_reload(module)
     for listener in bootstrap_utils.register_listeners:
         listener()
+
 
 def unregister():
     for listener in bootstrap_utils.unregister_listeners:
