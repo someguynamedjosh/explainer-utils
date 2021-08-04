@@ -1,0 +1,11 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/josh/Workspace/blender_autocomplete/2.93/"
+    ],
+    "python.linting.pylintArgs": [
+        "--init-hook",
+        "import sys; sys.path.append('/home/josh/Workspace/blender_autocomplete/2.93/')"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
