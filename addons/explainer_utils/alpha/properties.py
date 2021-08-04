@@ -1,4 +1,5 @@
-from bpy.types import FloatProperty, Object
+from bpy.props import FloatProperty
+from bpy.types import Object
 from explainer_utils import bootstrap_utils
 
 

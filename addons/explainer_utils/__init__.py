@@ -1,4 +1,4 @@
-from explainer_utils import bootstrap_utils
+from . import bootstrap_utils
 
 bl_info = {
     "name": "Explainer Utils",
@@ -16,10 +16,10 @@ def module_and_children(module_name, child_names):
 
 
 # A list of all modules excluding the root module and bootstrap_utils.
-modules = module_and_children("explainer_utils", [
+modules = module_and_children(__name__, [
     "test_module",
     *module_and_children("alpha", [
-
+        "properties"
     ])
 ])[1:]
 print(modules)
