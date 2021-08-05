@@ -16,7 +16,6 @@ class ExcludeFromRender(Operator):
             o.display_type = 'WIRE'
             for key in ['camera', 'diffuse', 'glossy', 'transmission', 'scatter', 'shadow']:
                 setattr(o.cycles_visibility, key, False)
-                print(key, getattr(o.cycles_visibility, key))
         return {'FINISHED'}
 
 

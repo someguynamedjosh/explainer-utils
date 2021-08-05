@@ -31,6 +31,8 @@ def layout_hacky_format_arg(layout: UILayout, context: Context, arg_index: int):
 
 def do_layout(layout: UILayout, context: Context):
     object = context.object
+    if object.type != 'FONT':
+        return
 
     r = layout.row()
     r.use_property_decorate = True

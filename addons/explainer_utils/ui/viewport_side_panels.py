@@ -16,6 +16,7 @@ class OBJECT_PT_explainer_settings(Panel):
         layout.prop(context.scene, "ignore_group_with_children")
         layout.prop(context.scene, "hide_transparent")
         layout.prop(context.scene, "visibility_range")
+        layout.prop(context.scene, "instantiation_source")
 
 class OBJECT_PT_explainer_latex(Panel):
     bl_idname = "OBJECT_PT_explainer_latex"

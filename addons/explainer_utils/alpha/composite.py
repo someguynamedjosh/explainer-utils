@@ -26,7 +26,6 @@ def compute_composite_alpha_mode(obj: Object, depsgraph: Depsgraph) -> int:
         elif obj.alpha_mode == 'fade_to_black':
             return 1
         elif obj.alpha_mode == 'same_as_parent':
-            print(obj.parent)
             return compute_composite_alpha_mode(obj.parent, depsgraph)
 
 

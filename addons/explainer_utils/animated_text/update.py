@@ -8,6 +8,7 @@ import string
 def update_obj(scene: Scene, depsgraph: Depsgraph, obj: Object):
     if not obj.use_animated_text or obj.type != 'FONT':
         return
+    obj.instantiate_linked = False
     evaluated = obj
     if depsgraph is not None:
         evaluated = obj.evaluated_get(depsgraph)

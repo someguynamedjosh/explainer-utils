@@ -137,14 +137,12 @@ def reset_object_visibility_in_render(obj: Object):
 
 @persistent
 def render_pre_handler(scene: Scene, depsgraph: Depsgraph):
-    print('renderPre')
     for obj in scene.objects:
         update_object_visibility_in_render(obj)
 
 
 @persistent
 def render_post_handler(scene: Scene, depsgraph: Depsgraph):
-    print('renderPost')
     for obj in scene.objects:
         reset_object_visibility_in_render(obj)
 

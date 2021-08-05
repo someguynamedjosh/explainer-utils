@@ -43,6 +43,10 @@ modules = module_and_children(__name__, [
         "properties",
         "update"
     ]),
+    *module_and_children("storage", [
+        "instantiate",
+        "properties"
+    ]),
     *module_and_children("ui", [
         "main_pie",
         "object_properties_panel",

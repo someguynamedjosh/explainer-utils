@@ -60,6 +60,7 @@ def register_properties():
             "Use whatever the parent's behavior is (defaults to "
             + "Fade To Transparent if there is no parent)"
         )],
+        default='same_as_parent',
         options={'ANIMATABLE', 'LIBRARY_EDITABLE'},
         override={'LIBRARY_OVERRIDABLE'}
     )
