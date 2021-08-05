@@ -22,7 +22,7 @@ def register_properties():
     Scene.visibility_range = IntProperty(
         name="Visibility Range",
         description="How long an object should remain visible in the viewport after it has become transparent",
-        default=1,
+        default=120,
         min=1,
         soft_min=1,
         options=set(),

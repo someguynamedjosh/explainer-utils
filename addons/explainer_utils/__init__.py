@@ -24,12 +24,18 @@ modules = module_and_children(__name__, [
         "properties",
         "visibility"
     ]),
+    *module_and_children("fade", [
+        "operator",
+        "presets"
+    ]),
     *module_and_children("group", [
         "properties",
         "update"
     ]),
     *module_and_children("ui", [
-        "object_properties_panel"
+        "object_properties_panel",
+        "viewport_menu",
+        "viewport_side_panels"
     ]),
 ])[1:]
 
