@@ -9,6 +9,7 @@ from explainer_utils.alpha.composite import compute_composite_alpha_on_frame
 
 
 saving_right_now = False
+rendering_right_now = False
 
 
 def register_properties():
@@ -28,6 +29,12 @@ def register_properties():
     )
     Object.xu_hidden = BoolProperty(
         name="Hidden Due To Transparency",
+        description="Internal property used by explainer utils",
+        default=False,
+        options={'HIDDEN', 'SKIP_SAVE'}
+    )
+    Object.xu_hidden_render = BoolProperty(
+        name="Hidden In Render Due To Transparency",
         description="Internal property used by explainer utils",
         default=False,
         options={'HIDDEN', 'SKIP_SAVE'}
@@ -99,11 +106,47 @@ def reset_object_visibility(obj: Object):
 def reset_scene_visibility(scene: Scene):
     for obj in scene.objects:
         reset_object_visibility(obj)
+        reset_object_visibility_in_render(obj)
 
 
 def reset_file_visibility():
     for scene in bpy.data.scenes:
         reset_scene_visibility(scene)
+
+
+def update_object_visibility_in_render(obj: Object):
+    should_hide = obj.composite_alpha < 1e-5
+    if obj.is_occluder:
+        if len(obj.children) == 0:
+            should_hide = False
+        if obj.composite_alpha > 1 - 1e-5:
+            should_hide = True
+    if should_hide and not obj.hide_render:
+        obj.xu_hidden_render = True
+        obj.hide_render = True
+    elif not should_hide and obj.xu_hidden_render:
+        obj.xu_hidden_render = False
+        obj.hide_render = False
+
+
+def reset_object_visibility_in_render(obj: Object):
+    if obj.xu_hidden_render:
+        obj.xu_hidden_render = False
+        obj.hide_render = False
+
+
+@persistent
+def render_pre_handler(scene: Scene, depsgraph: Depsgraph):
+    print('renderPre')
+    for obj in scene.objects:
+        update_object_visibility_in_render(obj)
+
+
+@persistent
+def render_post_handler(scene: Scene, depsgraph: Depsgraph):
+    print('renderPost')
+    for obj in scene.objects:
+        reset_object_visibility_in_render(obj)
 
 
 @persistent
@@ -124,12 +167,16 @@ def register_odd_handlers():
     handlers.save_pre.append(save_pre_handler)
     handlers.save_post.append(save_post_handler)
     handlers.load_post.append(save_post_handler)
+    handlers.render_pre.append(render_pre_handler)
+    handlers.render_post.append(render_post_handler)
 
 
 def unregister_odd_handlers():
     handlers.save_pre.remove(save_pre_handler)
     handlers.save_post.remove(save_post_handler)
     handlers.load_post.remove(save_post_handler)
+    handlers.render_pre.remove(render_pre_handler)
+    handlers.render_post.remove(render_post_handler)
     reset_file_visibility()
 
 
