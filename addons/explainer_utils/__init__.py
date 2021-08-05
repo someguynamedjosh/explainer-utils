@@ -1,4 +1,5 @@
 from . import bootstrap_utils
+from bpy.app import handlers
 
 bl_info = {
     "name": "Explainer Utils",
@@ -21,11 +22,14 @@ modules = module_and_children(__name__, [
     *module_and_children("alpha", [
         "properties"
     ]),
+    *module_and_children("group", [
+        "properties",
+        "update"
+    ]),
     *module_and_children("ui", [
         "object_properties_panel"
     ]),
 ])[1:]
-print(modules)
 
 
 def register():
@@ -34,8 +38,12 @@ def register():
         bootstrap_utils.import_or_reload(module)
     for listener in bootstrap_utils.register_listeners:
         listener()
+    handlers.depsgraph_update_post.append(bootstrap_utils.on_update)
+    handlers.frame_change_post.append(bootstrap_utils.on_update)
 
 
 def unregister():
     for listener in bootstrap_utils.unregister_listeners:
         listener()
+    handlers.depsgraph_update_post.remove(bootstrap_utils.on_update)
+    handlers.frame_change_post.remove(bootstrap_utils.on_update)

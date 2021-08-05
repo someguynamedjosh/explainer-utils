@@ -13,7 +13,7 @@
 			"import sys; sys.path.append('/home/josh/Workspace/blender_autocomplete/2.93/')"
 		],
 		"python.linting.pylintEnabled": false,
-		"python.linting.enabled": true,
+		"python.linting.enabled": false,
 		"python.linting.flake8Enabled": true,
 		"python.analysis.extraPaths": [
 			"addons"

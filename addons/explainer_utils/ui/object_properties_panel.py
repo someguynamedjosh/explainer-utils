@@ -20,6 +20,7 @@ class ExplainerPanel(Panel):
 
         for (priority, sub_layout) in bootstrap_utils.object_panel_layouts:
             sub_layout(layout, context)
+            layout.separator()
 
 
 def register():
