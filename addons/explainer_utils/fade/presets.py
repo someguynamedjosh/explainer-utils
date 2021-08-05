@@ -72,8 +72,6 @@ def unregister():
     bpy.utils.unregister_class(OpenFadePresets)
 
     keymap.keymap_items.remove(keymap_item)
-    keyconfigs = bpy.context.window_manager.keyconfigs
-    keyconfigs.remove(keymap)
 
 
 bootstrap_utils.register_listeners.append(register)

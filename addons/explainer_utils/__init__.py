@@ -29,6 +29,12 @@ modules = module_and_children(__name__, [
         "properties",
         "visibility"
     ]),
+    *module_and_children("animated_text", [
+        "properties",
+        "ui",
+        "update",
+        "utils"
+    ]),
     *module_and_children("fade", [
         "operator",
         "presets"

@@ -76,8 +76,6 @@ def unregister():
     unregister_class(OpenExplainerUtils)
 
     keymap.keymap_items.remove(keymap_item)
-    keyconfigs = bpy.context.window_manager.keyconfigs
-    keyconfigs.remove(keymap)
 
 bootstrap_utils.register_listeners.append(register)
 bootstrap_utils.unregister_listeners.append(unregister)
