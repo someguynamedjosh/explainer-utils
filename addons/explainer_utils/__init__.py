@@ -4,6 +4,7 @@ from bpy.app import handlers
 bl_info = {
     "name": "Explainer Utils",
     "category": "All",
+    "location": "View3D > Object > Explainer Utils, Properties > Object > Explainer Utils",
     "blender": (2, 80, 0),
     "version": (0, 0, 1),
 }
@@ -18,6 +19,7 @@ def module_and_children(module_name, child_names):
 
 # A list of all modules excluding the root module and bootstrap_utils.
 modules = module_and_children(__name__, [
+    "exclude_from_render",
     "latex",
     "lazy_parent",
     *module_and_children("alpha", [
@@ -34,6 +36,7 @@ modules = module_and_children(__name__, [
         "update"
     ]),
     *module_and_children("ui", [
+        "main_pie",
         "object_properties_panel",
         "viewport_menu",
         "viewport_side_panels"

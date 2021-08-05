@@ -2,10 +2,12 @@ from bpy.types import Menu, VIEW3D_MT_object
 from bpy.utils import register_class, unregister_class
 
 from explainer_utils import bootstrap_utils
+from explainer_utils.exclude_from_render import ExcludeFromRender
 from explainer_utils.fade.operator import FadeOperator
 from explainer_utils.fade.presets import OpenFadePresets
 from explainer_utils.latex import AddLatex
 from explainer_utils.lazy_parent import LazyParent
+from explainer_utils.ui.main_pie import OpenExplainerUtils
 
 
 class ExplainerMenu(Menu):
@@ -15,9 +17,13 @@ class ExplainerMenu(Menu):
 
     def draw(self, context):
         layout = self.layout
-        layout.operator(AddLatex.bl_idname)
+        layout.operator(OpenExplainerUtils.bl_idname)
+        layout.separator()
         layout.operator(FadeOperator.bl_idname)
         layout.operator(OpenFadePresets.bl_idname)
+        layout.separator()
+        layout.operator(AddLatex.bl_idname)
+        layout.operator(ExcludeFromRender.bl_idname)
         layout.operator(LazyParent.bl_idname)
 
 
