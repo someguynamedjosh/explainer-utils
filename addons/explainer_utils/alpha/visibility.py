@@ -8,6 +8,9 @@ from explainer_utils import bootstrap_utils
 from explainer_utils.alpha.composite import compute_composite_alpha_on_frame
 
 
+saving_right_now = False
+
+
 def register_properties():
     Scene.hide_transparent = BoolProperty(
         name="Hide Transparent",
@@ -32,6 +35,8 @@ def register_properties():
 
 
 def unregister_properties():
+    Scene.hide_transparent = None
+    Scene.visibility_range = None
     Object.xu_hidden = None
 
 
@@ -44,7 +49,8 @@ def max_alpha_in_time_window(obj: Object, window_start: int, window_end: int) ->
 
 # Hide an object based on its transparency.
 def update_object_visibility(scene: Scene, obj: Object):
-    if not scene.hide_transparent or obj.select_get():
+    global saving_right_now
+    if not scene.hide_transparent or saving_right_now or obj.select_get():
         reset_object_visibility(obj)
         return
 
@@ -102,11 +108,15 @@ def reset_file_visibility():
 
 @persistent
 def save_pre_handler(scene: Scene, depsgraph: Depsgraph):
+    global saving_right_now
+    saving_right_now = True
     reset_file_visibility()
 
 
 @persistent
 def save_post_handler(scene: Scene, depsgraph: Depsgraph):
+    global saving_right_now
+    saving_right_now = False
     update_file_visibility()
 
 
