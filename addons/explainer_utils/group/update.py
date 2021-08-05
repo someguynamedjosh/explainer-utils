@@ -1,8 +1,11 @@
 from bpy.types import Scene, Depsgraph, Object
 from explainer_utils import bootstrap_utils
+from explainer_utils.alpha.visibility import reset_object_visibility
 
 
 def select_set_hierarchy(root: Object, value: bool):
+    if value:
+        reset_object_visibility(root)
     root.select_set(value)
     for child in root.children:
         select_set_hierarchy(child, value)

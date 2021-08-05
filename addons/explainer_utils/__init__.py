@@ -20,7 +20,9 @@ def module_and_children(module_name, child_names):
 modules = module_and_children(__name__, [
     "test_module",
     *module_and_children("alpha", [
-        "properties"
+        "composite",
+        "properties",
+        "visibility"
     ]),
     *module_and_children("group", [
         "properties",

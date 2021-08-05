@@ -1,4 +1,4 @@
-from bpy.props import FloatProperty
+from bpy.props import BoolProperty, FloatProperty
 from bpy.types import Context, Object, UILayout
 from explainer_utils import bootstrap_utils
 
@@ -13,6 +13,11 @@ def layout_properties(layout: UILayout, context: Context):
     row.use_property_decorate = True
     row.use_property_split = True
     row.prop(context.object, "composite_alpha", slider=True)
+
+    row = layout.row()
+    row.use_property_decorate = True
+    row.use_property_split = True
+    row.prop(context.object, "is_occluder")
 
 
 bootstrap_utils.object_panel_layouts.append((500, layout_properties))
@@ -47,6 +52,17 @@ def register_properties():
         precision=2,
         options=set(),
         override=set()
+    )
+    Object.is_occluder = BoolProperty(
+        name="Is Occluder?",
+        description="Check if this object works to hide other objects "
+        + "as alpha goes to zero (e.g. a black square which becomes "
+        + "opaque when composite_alpha=0.0). If this object has children, "
+        + "this object is assumed to only occlude its children, and both "
+        + "will be hidden when composite_alpha = 0.0",
+        default=False,
+        options={'LIBRARY_EDITABLE'},
+        override={'LIBRARY_OVERRIDABLE'}
     )
 
 
