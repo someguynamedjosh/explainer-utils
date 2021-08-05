@@ -1,9 +1,14 @@
-from bpy.props import BoolProperty, FloatProperty
+from bpy.props import BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import Context, Object, UILayout
 from explainer_utils import bootstrap_utils
 
 
 def layout_properties(layout: UILayout, context: Context):
+    row = layout.row()
+    row.use_property_decorate = True
+    row.use_property_split = True
+    row.prop(context.object, "alpha_mode", slider=True)
+
     row = layout.row()
     row.use_property_decorate = True
     row.use_property_split = True
@@ -20,7 +25,7 @@ def layout_properties(layout: UILayout, context: Context):
             row = layout.row()
             row.alignment = 'RIGHT'
             row.label(text="{:0.0f}% occluded by {}".format(
-                (1.0 - parent.composite_alpha) * 100.0, 
+                (1.0 - parent.composite_alpha) * 100.0,
                 parent.name
             ))
         parent = parent.parent
@@ -35,12 +40,42 @@ bootstrap_utils.object_panel_layouts.append((500, layout_properties))
 
 
 def register_properties():
+    Object.alpha_mode = EnumProperty(
+        name="Alpha Mode",
+        description="How a material should react to changes in alpha. Does "
+        + "nothing without an appropriate material. Use an attribute node "
+        + "with the name set to `composite_alpha_mode` to access this "
+        + "property in materials, 0=transparent, 1=black",
+        items=[(
+            "fade_to_transparent",
+            "Fade To Transparent",
+            "Become increasingly transparent as alpha approaches zero",
+        ), (
+            "fade_to_black",
+            "Fade To Black",
+            "Become increasingly dark as alpha approaches zero",
+        ), (
+            "same_as_parent",
+            "Same As Parent",
+            "Use whatever the parent's behavior is (defaults to "
+            + "Fade To Transparent if there is no parent)"
+        )],
+        options={'ANIMATABLE', 'LIBRARY_EDITABLE'},
+        override={'LIBRARY_OVERRIDABLE'}
+    )
+    Object.composite_alpha_mode = IntProperty(
+        name="Composite Alpha Mode",
+        description="See Alpha Mode",
+        min=0,
+        max=1,
+        options={'HIDDEN', 'LIBRARY_EDITABLE'},
+        override={'LIBRARY_OVERRIDABLE'}
+    )
     Object.alpha = FloatProperty(
         name="Alpha",
         description="Transparency of the object.\nUse composite alpha instead "
         + "of this when making materials.\nDoes nothing without an "
-        + "appropriate material.\nWhen interaction helpers are enabled, "
-        + "transparent objects will be hidden",
+        + "appropriate material.",
         default=1.0,
         min=0.0,
         max=1.0,
@@ -81,8 +116,10 @@ bootstrap_utils.register_listeners.append(register_properties)
 
 
 def unregister_properties():
+    Object.alpha_mode = None
     Object.alpha = None
     Object.composite_alpha = None
+    Object.is_occluder = None
 
 
 bootstrap_utils.unregister_listeners.append(unregister_properties)
