@@ -1,5 +1,5 @@
 from bpy.props import BoolProperty
-from bpy.types import Context, Object, UILayout
+from bpy.types import Context, Object, Scene, UILayout
 from explainer_utils import bootstrap_utils
 
 
@@ -14,6 +14,14 @@ bootstrap_utils.object_panel_layouts.append((100, layout_properties))
 
 
 def register_properties():
+    Scene.ignore_group_with_children = BoolProperty(
+        name="Ignore Group With Children",
+        description="When checked, disables all behaviors for objects grouped with children",
+        default=False,
+        options={'LIBRARY_EDITABLE'},
+        override={'LIBRARY_OVERRIDABLE'}
+    )
+
     Object.group_with_children = BoolProperty(
         name="Group With Children",
         description="Enables a variety of behaviors not documented here",

@@ -14,6 +14,17 @@ def layout_properties(layout: UILayout, context: Context):
     row.use_property_split = True
     row.prop(context.object, "composite_alpha", slider=True)
 
+    parent = context.object.parent
+    while parent is not None:
+        if parent.is_occluder:
+            row = layout.row()
+            row.alignment = 'RIGHT'
+            row.label(text="{:0.0f}% occluded by {}".format(
+                (1.0 - parent.composite_alpha) * 100.0, 
+                parent.name
+            ))
+        parent = parent.parent
+
     row = layout.row()
     row.use_property_decorate = True
     row.use_property_split = True

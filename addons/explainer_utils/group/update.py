@@ -38,6 +38,8 @@ def first_grouped_parent(obj: Object):
 #    o      / \ <- Selecting that will cause its parent and all children to be selected, because that parent is not already breached.
 #          s   s <- Selecting this will cause only that to be selected (and now breached), because its parent is already breached.
 def update(scene: Scene, depsgraph: Depsgraph):
+    if scene.ignore_group_with_children:
+        return
     objects_to_group_select = set()
     objects_to_flag_breached = set()
 

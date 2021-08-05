@@ -18,7 +18,7 @@ def module_and_children(module_name, child_names):
 
 # A list of all modules excluding the root module and bootstrap_utils.
 modules = module_and_children(__name__, [
-    "test_module",
+    "lazy_parent",
     *module_and_children("alpha", [
         "composite",
         "properties",
