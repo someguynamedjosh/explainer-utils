@@ -3,6 +3,9 @@
 		{
 			"path": "addons/"
 		},
+		{
+			"path": "."
+		}
 	],
 	"settings": {
 		"python.autoComplete.extraPaths": [
