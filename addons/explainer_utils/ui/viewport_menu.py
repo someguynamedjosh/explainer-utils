@@ -7,6 +7,7 @@ from explainer_utils.fade.operator import FadeOperator
 from explainer_utils.fade.presets import OpenFadePresets
 from explainer_utils.latex import AddLatex
 from explainer_utils.lazy_parent import LazyParent
+from explainer_utils.storage.instantiate import OT_InstantiateMenu
 from explainer_utils.ui.main_pie import OpenExplainerUtils
 
 
@@ -23,6 +24,7 @@ class ExplainerMenu(Menu):
         layout.operator(OpenFadePresets.bl_idname)
         layout.separator()
         layout.operator(AddLatex.bl_idname)
+        layout.operator(OT_InstantiateMenu.bl_idname)
         layout.operator(ExcludeFromRender.bl_idname)
         layout.operator(LazyParent.bl_idname)
 

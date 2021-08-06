@@ -17,7 +17,7 @@ def compute_composite_alpha(obj: Object, alpha_getter: Callable[[Object], float]
 
 def compute_composite_alpha_mode(obj: Object, depsgraph: Depsgraph) -> int:
     if obj is None:
-        return 0
+        return 1
     else:
         if depsgraph is not None:
             obj = obj.evaluated_get(depsgraph)
