@@ -7,23 +7,6 @@ from explainer_utils.latex import AddLatex
 from explainer_utils.storage.instantiate import OT_InstantiateMenu
 
 
-def find_overlay_data(context):
-    for space in context.area.spaces:
-        try:
-            return space.overlay
-        except:
-            pass
-    for area in context.screen.areas:
-        if found:
-            break
-        for space in area.spaces:
-            try:
-                return space.overlay
-            except:
-                pass
-    return None
-
-
 class VIEW3D_MT_PIE_explainer_utils(Menu):
     bl_label = 'Explainer Utils'
 
@@ -33,16 +16,12 @@ class VIEW3D_MT_PIE_explainer_utils(Menu):
 
         # Go home layout engine, you're drunk.
 
-        od = find_overlay_data(context)
-        if od is None:
-            p.separator()
-        else:
-            p.prop(od, "show_overlays")
         p.operator(OT_InstantiateMenu.bl_idname)
         p.operator(AddLatex.bl_idname)
+        p.separator()
+        p.operator(ExcludeFromRender.bl_idname)
         p.prop(context.scene, "hide_transparent")
         p.prop(context.scene, "ignore_group_with_children")
-        p.operator(ExcludeFromRender.bl_idname)
 
 
 class OpenExplainerUtils(Operator):
