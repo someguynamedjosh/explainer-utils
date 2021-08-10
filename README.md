@@ -51,6 +51,9 @@ just find them helpful:
   particularly cumbersome on my keyboard)
 - If working with python scripts: 
   - enable `interface` > `display` > `developer extras`
+    - Although note that this will clog up the 'custom properties' panel with
+      all properties defined by addons that aren't defined in Blender's core c++
+      codebase.
   - enable `interface` > `display` > `python tooltips`
 
 
