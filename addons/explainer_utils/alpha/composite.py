@@ -62,6 +62,10 @@ def update_composites(scene: Scene, depsgraph: Depsgraph):
                 evaluated = obj.evaluated_get(depsgraph)
                 for propname in ["location", "scale"]:
                     setattr(obj, propname, getattr(evaluated, propname))
+                for custom_propname in obj.keys():
+                    if custom_propname in ["cycles", "alpha", "composite_alpha", "_RNA_UI", "xu_breached", "composite_alpha_mode", "group_with_children", "cycles_visibility", "xu_hidden", "xu_hidden_render"]:
+                        continue
+                    obj[custom_propname] = evaluated[custom_propname]
             obj.update_tag()
         except:
             # Why does it randomly error for 0.1% of frames? I don't know and I
