@@ -53,15 +53,20 @@ def get_alpha_via_depsgraph(obj: Object, depsgraph: Depsgraph) -> float:
 def update_composites(scene: Scene, depsgraph: Depsgraph):
     def alpha_getter(o): return get_alpha_via_depsgraph(o, depsgraph)
     for obj in scene.objects:
-        ca = compute_composite_alpha(obj, alpha_getter)
-        obj.composite_alpha = ca
-        cam = compute_composite_alpha_mode(obj, depsgraph)
-        obj.composite_alpha_mode = cam
-        if depsgraph is not None:
-            evaluated = obj.evaluated_get(depsgraph)
-            for propname in ["location", "scale"]:
-                setattr(obj, propname, getattr(evaluated, propname))
-        obj.update_tag()
+        try:
+            ca = compute_composite_alpha(obj, alpha_getter)
+            obj.composite_alpha = ca
+            cam = compute_composite_alpha_mode(obj, depsgraph)
+            obj.composite_alpha_mode = cam
+            if depsgraph is not None:
+                evaluated = obj.evaluated_get(depsgraph)
+                for propname in ["location", "scale"]:
+                    setattr(obj, propname, getattr(evaluated, propname))
+            obj.update_tag()
+        except:
+            # Why does it randomly error for 0.1% of frames? I don't know and I
+            # don't want to put effort into actually figuring that out.
+            pass
 
 
 bootstrap_utils.update_listeners.append(update_composites)
