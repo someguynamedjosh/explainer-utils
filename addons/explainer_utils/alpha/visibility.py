@@ -64,8 +64,15 @@ def update_object_visibility(scene: Scene, obj: Object):
         return
 
     window_start = scene.frame_current - scene.visibility_range
+    window_middle = scene.frame_current
     window_end = scene.frame_current + scene.visibility_range
-    ma = max_alpha_in_time_window(obj, window_start, window_end)
+    # A much cheaper (but technically inaccurate) alternative to checking the
+    # alpha at all frames in the range.
+    ma = max(
+        compute_composite_alpha_on_frame(obj, window_start),
+        compute_composite_alpha_on_frame(obj, window_middle),
+        compute_composite_alpha_on_frame(obj, window_end),
+    )
     alpha_now = obj.composite_alpha
 
     should_hide = False
@@ -80,12 +87,15 @@ def update_object_visibility(scene: Scene, obj: Object):
     elif ma < 1e-5:
         should_hide = True
 
-    if should_hide and not obj.hide_get():
-        obj.xu_hidden = True
-        obj.hide_set(True)
-    elif not should_hide and obj.xu_hidden:
-        obj.xu_hidden = False
-        obj.hide_set(False)
+    try:
+        if should_hide and not obj.hide_get():
+            obj.xu_hidden = True
+            obj.hide_set(True)
+        elif not should_hide and obj.xu_hidden:
+            obj.xu_hidden = False
+            obj.hide_set(False)
+    except:
+        pass
 
 
 def update_scene_visibility(scene: Scene):
