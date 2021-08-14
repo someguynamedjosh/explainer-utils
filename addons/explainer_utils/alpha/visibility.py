@@ -57,8 +57,6 @@ def max_alpha_in_time_window(obj: Object, window_start: int, window_end: int) ->
 # Hide an object based on its transparency.
 def update_object_visibility(scene: Scene, obj: Object):
     global saving_right_now, now_rendering
-    if now_rendering:
-        update_object_visibility_in_render(scene, obj)
     if not scene.hide_transparent or saving_right_now or obj.select_get():
         reset_object_visibility(obj)
         return
@@ -155,6 +153,8 @@ now_rendering = False
 def render_pre_handler(scene: Scene, depsgraph: Depsgraph):
     global now_rendering
     now_rendering = True
+    for obj in scene.objects:
+        update_object_visibility_in_render(scene, obj)
 
 
 @persistent
