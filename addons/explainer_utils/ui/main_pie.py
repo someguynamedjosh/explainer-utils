@@ -4,6 +4,7 @@ from bpy.utils import register_class, unregister_class
 from explainer_utils import bootstrap_utils
 from explainer_utils.exclude_from_render import ExcludeFromRender
 from explainer_utils.latex import AddLatex
+from explainer_utils.lazy_parent import LazyParent
 from explainer_utils.storage.instantiate import OT_InstantiateMenu
 
 
@@ -18,7 +19,7 @@ class VIEW3D_MT_PIE_explainer_utils(Menu):
 
         p.operator(OT_InstantiateMenu.bl_idname)
         p.operator(AddLatex.bl_idname)
-        p.separator()
+        p.operator(LazyParent.bl_idname)
         p.operator(ExcludeFromRender.bl_idname)
         p.prop(context.scene, "hide_transparent")
         p.prop(context.scene, "ignore_group_with_children")

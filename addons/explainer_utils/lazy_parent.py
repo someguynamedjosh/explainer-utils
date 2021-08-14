@@ -1,3 +1,4 @@
+import bpy
 from bpy.types import Context, UILayout, Operator, Object, VIEW3D_MT_object_parent
 from bpy.utils import register_class, unregister_class
 from explainer_utils import bootstrap_utils

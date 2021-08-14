@@ -18,6 +18,9 @@ def instantiate(context: Context, root: Object, objects: list[Object], into: Col
         if not obj.instantiate_linked:
             obj.data = obj.data.copy()
         obj.update_tag()
+        if obj.parent is None:
+            context.view_layer.objects.active = obj
+            obj.location = context.scene.cursor.location
     for obj in objects:
         into.objects.unlink(obj)
 
@@ -49,7 +52,7 @@ class OT_InstantiateMenu(Operator):
 
     @classmethod
     def poll(cls, context: Context):
-        return not context.scene.is_instantiation_source
+        return True
 
     def invoke(self, context: Context, event: Event):
         wm = context.window_manager
@@ -61,12 +64,16 @@ COL_SEP = '|  '
 PARENT_SEP = '>'
 
 
+def sorted_by_name(items):
+    return sorted(items, key=lambda i: i.name)
+
+
 def look_for_grouped_children(seps: str, this: UIPopupMenu, obj: Object):
     if obj.group_with_children:
         add_object_entries(seps, this, obj)
     else:
-        for child in obj.children:
-            look_for_grouped_children(seps, this, obj)
+        for child in sorted_by_name(obj.children):
+            look_for_grouped_children(seps, this, child)
 
 
 def add_object_entries(seps: str, this: UIPopupMenu, object: Object):
@@ -76,7 +83,7 @@ def add_object_entries(seps: str, this: UIPopupMenu, object: Object):
         icon='OBJECT_DATA'
     )
     op.object_to_instantiate = object.name_full
-    for child in object.children:
+    for child in sorted_by_name(object.children):
         look_for_grouped_children(seps + PARENT_SEP, this, child)
 
 
@@ -84,17 +91,18 @@ def add_collection_entries(seps: str, this: UIPopupMenu, collection: Collection)
     this.layout.label(text=seps + collection.name,
                       icon='OUTLINER_COLLECTION')
     new_seps = seps + COL_SEP
-    for object in collection.objects:
+    for object in sorted_by_name(collection.objects):
         if object.parent is not None:
             continue
         add_object_entries(new_seps, this, object)
-    for child in collection.children:
+    for child in sorted_by_name(collection.children):
         add_collection_entries(new_seps, this, child)
 
 
 def test_menu(this: UIPopupMenu, context: Context):
     layout = this.layout
-    for collection in context.scene.instantiation_source.collection.children:
+    collections = context.scene.instantiation_source.collection.children
+    for collection in sorted_by_name(collections):
         add_collection_entries('', this, collection)
 
 
