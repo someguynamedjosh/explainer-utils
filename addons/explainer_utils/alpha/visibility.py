@@ -56,7 +56,9 @@ def max_alpha_in_time_window(obj: Object, window_start: int, window_end: int) ->
 
 # Hide an object based on its transparency.
 def update_object_visibility(scene: Scene, obj: Object):
-    global saving_right_now
+    global saving_right_now, now_rendering
+    if now_rendering:
+        update_object_visibility_in_render(scene, obj)
     if not scene.hide_transparent or saving_right_now or obj.select_get():
         reset_object_visibility(obj)
         return
@@ -114,8 +116,9 @@ def reset_file_visibility():
         reset_scene_visibility(scene)
 
 
-def update_object_visibility_in_render(obj: Object):
-    should_hide = obj.composite_alpha < 1e-5
+def update_object_visibility_in_render(scene: Scene, obj: Object):
+    alpha = compute_composite_alpha_on_frame(obj, scene.frame_current)
+    should_hide = alpha < 1e-5
     if obj.is_occluder:
         if len(obj.children) == 0:
             should_hide = False
@@ -135,14 +138,19 @@ def reset_object_visibility_in_render(obj: Object):
         obj.hide_render = False
 
 
+now_rendering = False
+
+
 @persistent
 def render_pre_handler(scene: Scene, depsgraph: Depsgraph):
-    for obj in scene.objects:
-        update_object_visibility_in_render(obj)
+    global now_rendering
+    now_rendering = True
 
 
 @persistent
 def render_post_handler(scene: Scene, depsgraph: Depsgraph):
+    global now_rendering
+    now_rendering = False
     for obj in scene.objects:
         reset_object_visibility_in_render(obj)
 

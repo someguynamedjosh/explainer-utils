@@ -26,9 +26,12 @@ def update_obj(scene: Scene, depsgraph: Depsgraph, obj: Object):
             text += formatted
             material_indexes += [getattr(evaluated, mat_key)] * len(formatted)
             arg_idx += 1
-    obj.data.body = text
-    for i, mat_idx in enumerate(material_indexes):
-        obj.data.body_format[i].material_index = mat_idx
+    try:
+        obj.data.body = text
+        for i, mat_idx in enumerate(material_indexes):
+            obj.data.body_format[i].material_index = mat_idx
+    except:
+        pass
 
 
 def update(scene: Scene, depsgraph: Depsgraph):

@@ -17,7 +17,7 @@ def find_nearest_keyframes(scene: Scene, fcurve: FCurve):
     kp = fcurve.keyframe_points
     nearest_before = None
     nearest_after = None
-    now = context.scene.frame_current
+    now = scene.frame_current
     for kpi in range(len(kp)):
         if kp[kpi].co.x <= now:
             nearest_before = kpi

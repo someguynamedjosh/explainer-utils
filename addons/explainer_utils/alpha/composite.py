@@ -57,6 +57,10 @@ def update_composites(scene: Scene, depsgraph: Depsgraph):
         obj.composite_alpha = ca
         cam = compute_composite_alpha_mode(obj, depsgraph)
         obj.composite_alpha_mode = cam
+        if depsgraph is not None:
+            evaluated = obj.evaluated_get(depsgraph)
+            for propname in ["location", "scale"]:
+                setattr(obj, propname, getattr(evaluated, propname))
         obj.update_tag()
 
 
