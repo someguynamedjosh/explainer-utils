@@ -130,7 +130,7 @@ def update_object_visibility_in_render(scene: Scene, obj: Object):
     if obj.is_occluder:
         if len(obj.children) == 0:
             should_hide = False
-        if obj.composite_alpha > 1 - 1e-5:
+        elif obj.composite_alpha > 1 - 1e-5:
             should_hide = True
     if should_hide and not obj.hide_render:
         obj.xu_hidden_render = True

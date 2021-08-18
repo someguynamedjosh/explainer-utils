@@ -6,7 +6,10 @@ from explainer_utils import bootstrap_utils
 
 
 def instantiate(context: Context, root: Object, objects: list[Object], into: Collection):
+    old_ignore = context.scene.ignore_group_with_children
+    context.scene.ignore_group_with_children = True
     bpy.ops.object.select_all(action='DESELECT')
+
     for obj in objects:
         into.objects.link(obj)
         obj.select_set(True)
@@ -23,6 +26,8 @@ def instantiate(context: Context, root: Object, objects: list[Object], into: Col
             obj.location = context.scene.cursor.location
     for obj in objects:
         into.objects.unlink(obj)
+
+    context.scene.ignore_group_with_children = old_ignore
 
 
 class OT_Instantiate(Operator):

@@ -60,7 +60,10 @@ def update_composites(scene: Scene, depsgraph: Depsgraph):
             obj.composite_alpha_mode = cam
             if depsgraph is not None:
                 evaluated = obj.evaluated_get(depsgraph)
-                for propname in ["location", "scale"]:
+                # for (sks, esks) in zip(obj.data.shape_keys, evaluated.data.shape_keys):
+                #     for (sk, esk) in zip(sks.key_blocks, evaluated.key_blocks):
+                #         sk.value = esk.value
+                for propname in ["location", "rotation_axis_angle", "rotation_euler", "rotation_mode", "rotation_quaternion", "scale"]:
                     setattr(obj, propname, getattr(evaluated, propname))
                 for custom_propname in obj.keys():
                     if custom_propname in ["cycles", "alpha", "composite_alpha", "_RNA_UI", "xu_breached", "composite_alpha_mode", "group_with_children", "cycles_visibility", "xu_hidden", "xu_hidden_render"]:
