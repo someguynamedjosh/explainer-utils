@@ -3,8 +3,6 @@ from bpy.utils import register_class, unregister_class
 
 from explainer_utils import bootstrap_utils
 from explainer_utils.exclude_from_render import ExcludeFromRender
-from explainer_utils.fade.operator import FadeOperator
-from explainer_utils.fade.presets import OpenFadePresets
 from explainer_utils.latex import AddLatex
 from explainer_utils.lazy_parent import LazyParent
 from explainer_utils.storage.instantiate import OT_InstantiateMenu
@@ -19,9 +17,6 @@ class ExplainerMenu(Menu):
     def draw(self, context):
         layout = self.layout
         layout.operator(OpenExplainerUtils.bl_idname)
-        layout.separator()
-        layout.operator(FadeOperator.bl_idname)
-        layout.operator(OpenFadePresets.bl_idname)
         layout.separator()
         layout.operator(AddLatex.bl_idname)
         layout.operator(OT_InstantiateMenu.bl_idname)

@@ -13,10 +13,12 @@ class OBJECT_PT_explainer_settings(Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.prop(context.scene, "ignore_group_with_children")
-        layout.prop(context.scene, "hide_transparent")
-        layout.prop(context.scene, "visibility_range")
         layout.prop(context.scene, "instantiation_source")
+        layout.separator()
+        layout.prop(context.scene.explainer_timing_settings, "short_time")
+        layout.prop(context.scene.explainer_timing_settings, "med_time")
+        layout.prop(context.scene.explainer_timing_settings, "long_time")
+        layout.prop(context.scene.explainer_timing_settings, "jump_time")
 
 class OBJECT_PT_explainer_latex(Panel):
     bl_idname = "OBJECT_PT_explainer_latex"

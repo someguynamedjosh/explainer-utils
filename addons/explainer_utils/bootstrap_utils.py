@@ -1,4 +1,5 @@
 from bpy.app.handlers import persistent
+from bpy.types import Depsgraph, Object, Scene
 import importlib
 import sys
 
@@ -16,13 +17,6 @@ def clear_all_registries():
     unregister_listeners.clear()
     update_listeners.clear()
     object_panel_layouts.clear()
-
-
-@persistent
-def on_update(scene, depsgraph):
-    global update_listeners
-    for listener in update_listeners:
-        listener(scene, depsgraph)
 
 
 register_listeners = []
